@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types'
 export default class Navbar extends Component {
+    static defaultProps = {
+        title: 'Title Here',
+      }
+    
+      static propTypes = {
+        title: PropTypes.string
+      }
     render() {
         return (
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">NewsMonkey</Link>
+                    <Link className="navbar-brand" to="/">{this.props.title}</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -33,17 +41,17 @@ export default class Navbar extends Component {
                                 <Link className="nav-link" to="/technology">Technology</Link>  
                             </li>
                             
-                            {/* <li className="nav-item dropdown">
+                            <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Topics
+                                    World
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" href="/">Action</a></li>
-                                    <li><a className="dropdown-item" href="/">Another action</a></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><a className="dropdown-item" href="/">Something else here</a></li>
+                                    <li><a className="dropdown-item" href="/">USA</a></li>
+                                    <li><a className="dropdown-item" href="/">Russia</a></li>
+                                    <li><a className="dropdown-item" href="/">China</a></li>
+                                    {/* <li><a className="dropdown-item" href="/"></a></li> */}
                                 </ul>
-                            </li> */}
+                            </li>
                         </ul>
                         <form className="d-flex" role="search">
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />

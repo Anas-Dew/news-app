@@ -11,7 +11,7 @@ export class NewsItem extends Component {
             <div className="card-body">
               <h5 className="card-title">{title}</h5>
               <p className="card-text">{description}</p>
-              <p class="card-text"><small class="text-muted">Published at {new Date(publishedAt).toUTCString()}</small></p>
+              <p className="card-text"><small className="text-muted">Published at {new Date(publishedAt).toUTCString()}</small></p>
               <a href={newsUrl} className="btn btn-primary">Read more</a>
             </div>
         </div>
