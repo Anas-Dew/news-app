@@ -36,7 +36,7 @@ export class News extends Component {
 
   async componentDidMount() {
     this.props.setProgress(10);
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=72261af1c361444ea5ccf9c602b6e5b3&page=${this.state.page}&pageSize=${this.state.pageSize}`
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.pageSize}`
     let rawData = await fetch(apiUrl)
     let parsedData = await rawData.json()
     this.props.setProgress(45);
@@ -51,30 +51,8 @@ export class News extends Component {
     this.props.setProgress(100);
   }
 
-  prevPage = async () => {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=72261af1c361444ea5ccf9c602b6e5b3&page=${this.state.page - 1}&pageSize=${this.state.pageSize}`
-    let rawData = await fetch(apiUrl)
-    let parsedData = await rawData.json()
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page - 1
-    })
-  }
-
-  nextPage = async () => {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=72261af1c361444ea5ccf9c602b6e5b3&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`
-    let rawData = await fetch(apiUrl)
-    let parsedData = await rawData.json()
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page + 1,
-      loading: false
-    })
-    window.scrollTo(0, 0)
-  }
-
   fetchMoreData = async () => {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=72261af1c361444ea5ccf9c602b6e5b3&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`
     let rawData = await fetch(apiUrl)
     let parsedData = await rawData.json()
     this.setState({
