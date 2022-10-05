@@ -9,7 +9,7 @@ import { useState } from 'react';
 const App = (props) => {
   const apiKey = process.env.REACT_APP_API_KEY
   const [Progress, setProgress] = useState(0)
-
+  // const [Country, setCountry] = useState('us')
 
   return (
     <Router>
@@ -21,7 +21,7 @@ const App = (props) => {
       />
       <NavBar title='NewsBrief' />
       <Routes>
-        <Route exact path="/" element={<News setProgress={setProgress} apiKey={apiKey} key="home" category="general" />} />
+        <Route exact path="/" element={<News  setProgress={setProgress} apiKey={apiKey} key="home" category="general" />} />
         <Route exact path="/entertainment" element={<News setProgress={setProgress} apiKey={apiKey} key="entertainment" category="entertainment" />} />
         <Route exact path="/business" element={<News setProgress={setProgress} apiKey={apiKey} key="business" category="business" />} />
         <Route exact path="/health" element={<News setProgress={setProgress} apiKey={apiKey} key="health" category="health" />} />

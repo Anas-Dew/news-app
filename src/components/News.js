@@ -53,7 +53,7 @@ const News = (props) => {
     return (
       <>
 
-        <h3 style={{display:"flex",justifyContent:"center",marginTop:"10px"}}>{`Top headlines in ${category}`}</h3>
+        <h3 style={{display:"flex",justifyContent:"center",marginTop:"90px"}}>{`Top headlines in ${category}`}</h3>
 
         <InfiniteScroll dataLength={articles.length} next={fetchMoreData} hasMore={articles.length !== totalResults} loader={<Loading />} >
           <div className='container my-3'>
