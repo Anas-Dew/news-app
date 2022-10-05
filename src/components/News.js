@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import NewsItem from './NewsItem'
 import Loading from './Loading'
 import PropTypes from 'prop-types'
@@ -8,72 +8,59 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
-export class News extends Component {
-  static defaultProps = {
-    country: 'in',
-    category: 'general'
-  }
-
-  static propTypes = {
-    country: PropTypes.string,
-    category: PropTypes.string
-  }
+const News = (props) => {
+  const [articles, setarticles] = useState([])
+  const [loading, setloading] = useState(true)
+  const [country, setcountry] = useState('Unknown')
+  const [page, setpage] = useState(1)
+  const [pageSize, setpageSize] = useState(9)
+  const [category, setcategory] = useState('india')
+  const [totalResults, settotalResults] = useState(null)
 
 
-  constructor() {
-    super();
-    this.state = {
-      articles: [],
-      loading: true,
-      country: 'Unknown',
-      page: 1,
-      pageSize: 9,
-      category: 'india',
-      totalResults: null
-
-    }
-  }
-
-  async componentDidMount() {
-    this.props.setProgress(10);
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.pageSize}`
+  const init = async() => {
+    props.setProgress(10);
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}`
     let rawData = await fetch(apiUrl)
     let parsedData = await rawData.json()
-    this.props.setProgress(45);
-    document.title = `${capitalize(this.props.category)} - NewsBrief`
-    this.setState({
-      articles: parsedData.articles,
-      country: "India",
-      loading: false,
-      category: capitalize(this.props.category),
-      totalResults: parsedData.totalResults
-    })
-    this.props.setProgress(100);
-  }
+    props.setProgress(45);
+    document.title = `${capitalize(props.category)} - NewsBrief`
 
-  fetchMoreData = async () => {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=${this.state.pageSize}`
+    setarticles(parsedData.articles)
+    setcountry('india')
+    setloading(false)
+    setcategory(capitalize(props.category))
+    settotalResults(parsedData.totalResults)
+    
+    props.setProgress(100);
+  }
+  useEffect(() => {
+    init();
+  }, [])
+  
+
+  const fetchMoreData = async () => {
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${pageSize}`
     let rawData = await fetch(apiUrl)
     let parsedData = await rawData.json()
-    this.setState({
-      page: this.state.page + 1,
-      articles: this.state.articles.concat(parsedData.articles),
-      loading: false
-    })
+    setpage(page + 1)
+    setarticles(articles.concat(parsedData.articles))
+    setloading(false)
+
   };
-  render() {
+  
 
     return (
       <>
 
-        <h3 style={{display:"flex",justifyContent:"center",marginTop:"10px"}}>{`Top headlines in ${this.state.category}`}</h3>
+        <h3 style={{display:"flex",justifyContent:"center",marginTop:"10px"}}>{`Top headlines in ${category}`}</h3>
 
-        <InfiniteScroll dataLength={this.state.articles.length} next={this.fetchMoreData} hasMore={this.state.articles.length !== this.state.totalResults} loader={<Loading />} >
+        <InfiniteScroll dataLength={articles.length} next={fetchMoreData} hasMore={articles.length !== totalResults} loader={<Loading />} >
           <div className='container my-3'>
 
             <div className='row my-4'>
 
-              {this.state.articles.map((story) => {
+              {articles.map((story) => {
                 return <div className='col-md-4'>
                   <NewsItem newsUrl={story.url} imageUrl={story.urlToImage} title={story.title} description={story.description} publishedAt={story.publishedAt} />
                 </div>
@@ -86,7 +73,17 @@ export class News extends Component {
 
       </>
     )
-  }
+  
 }
 
 export default News
+
+News.defaultProps = {
+  country: 'in',
+  category: 'general'
+}
+
+News.propTypes = {
+  country: PropTypes.string,
+  category: PropTypes.string
+}
